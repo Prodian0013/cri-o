@@ -1,6 +1,7 @@
-PREFIX ?= $(DESTDIR)/usr/local
+PREFIX ?= $(DESTDIR)/usr
 ETCDIR ?= $(DESTDIR)/etc
 CONTAINERS_DIR ?= $(ETCDIR)/containers
+DATAROOTDIR ?= ${PREFIX}/share/containers
 CNIDIR ?= $(ETCDIR)/cni/net.d
 BINDIR ?= $(PREFIX)/bin
 MANDIR ?= $(PREFIX)/share/man
@@ -22,11 +23,13 @@ install:
 	install $(SELINUX) -d -m 755 $(ZSHINSTALLDIR)
 	install $(SELINUX) -d -m 755 $(CONTAINERS_DIR)
 	install $(SELINUX) -d -m 755 $(CNIDIR)
-	install $(SELINUX) -D -m 755 -t $(BINDIR) bin/crio-x86_64-static-glibc
+	install $(SELINUX) -d -m 755 ${ETCDIR}/crio
+	install $(SELINUX) -d -m 755 ${OCIDIR}
+	install ${SELINUX} -d -m 755 $(DATAROOTDIR)/oci/hooks.d
+	install $(SELINUX) -D -m 755 -t $(BINDIR) bin/crio-x86_64-static-glibc	
 	install $(SELINUX) -D -m 755 -t $(BINDIR) bin/crio-x86_64-static-musl
-	ln -sf $(BINDIR)/$(DEFAULT_BINARY) $(BINDIR)/crio
-	install $(SELINUX) -D -m 755 -t $(BINDIR) bin/pause-x86_64-static-glibc
 	install $(SELINUX) -D -m 755 -t $(BINDIR) bin/pause-x86_64-static-musl
+	install $(SELINUX) -D -m 755 -t $(BINDIR) bin/pause-x86_64-static-glibc
 	install $(SELINUX) -D -m 644 -t $(ETCDIR) etc/crictl.yaml
 	install $(SELINUX) -D -m 644 -t $(OCIDIR) etc/crio-umount.conf
 	install $(SELINUX) -D -m 644 -t $(ETCDIR)/crio etc/crio.conf
@@ -40,6 +43,9 @@ install:
 	install $(SELINUX) -D -m 644 -t $(SYSTEMDDIR) contrib/crio-shutdown.service
 	install $(SELINUX) -D -m 644 -t $(SYSTEMDDIR) contrib/crio-wipe.service
 	install $(SELINUX) -D -m 644 -t $(SYSTEMDDIR) contrib/crio.service
+	install $(SELINUX) -D -m 644 -t $(SYSTEMDDIR) contrib/crio-metrics
+	install $(SELINUX) -D -m 644 -t $(SYSTEMDDIR) contrib/crio-network
+	install $(SELINUX) -D -m 644 -t $(SYSTEMDDIR) contrib/crio-storage
 
 .PHONY: uninstall
 uninstall:

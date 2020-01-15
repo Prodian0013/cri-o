@@ -24,6 +24,9 @@ FILES_CONTRIB=(
     "../contrib/systemd/crio-shutdown.service"
     "../contrib/systemd/crio-wipe.service"
     "../contrib/systemd/crio.service"
+    "../contrib/sysconfig/crio-metrics"
+    "../contrib/sysconfig/crio-network"
+    "../contrib/sysconfig/crio-storage"
 )
 COMPLETIONS="../completions"
 
